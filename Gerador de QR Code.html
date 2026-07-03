@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gerador de QR Code</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --text: #16181d;
+      --muted: #5f6673;
+      --line: #d9dde5;
+      --accent: #0f766e;
+      --accent-dark: #0b5f59;
+      --danger: #b42318;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    main {
+      width: min(100%, 760px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 18px 60px rgba(16, 24, 40, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 14px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+    }
+
+    input:focus {
+      outline: 3px solid rgba(15, 118, 110, 0.16);
+      border-color: var(--accent);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 16px;
+      font: inherit;
+      font-weight: 800;
+      color: #fff;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--accent-dark);
+    }
+
+    button.secondary {
+      color: var(--text);
+      background: #eef1f5;
+    }
+
+    button.secondary:hover {
+      background: #e2e7ee;
+    }
+
+    .message {
+      min-height: 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .message.error {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .preview {
+      display: grid;
+      place-items: center;
+      gap: 14px;
+      text-align: center;
+    }
+
+    .qr-box {
+      width: 220px;
+      height: 220px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      overflow: hidden;
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      display: none;
+      object-fit: contain;
+    }
+
+    .qr-box.has-code img {
+      display: block;
+    }
+
+    .qr-box.has-code span {
+      display: none;
+    }
+
+    .tiny {
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        align-items: start;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .qr-box {
+        width: min(100%, 260px);
+        height: auto;
+        aspect-ratio: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>Gerador de QR Code</h1>
+      <p>Cole um link, gere o QR Code e use a imagem onde precisar.</p>
+
+      <form id="qr-form" novalidate>
+        <label for="link">
+          Link
+          <input id="link" name="link" type="text" inputmode="url" placeholder="https://exemplo.com" autocomplete="url" required>
+        </label>
+
+        <div class="actions">
+          <button type="submit">Gerar QR Code</button>
+          <button id="download" class="secondary" type="button" hidden>Baixar PNG</button>
+        </div>
+
+        <div id="message" class="message" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="preview" aria-label="Prévia do QR Code">
+      <div id="qr-box" class="qr-box">
+        <span class="tiny">O QR Code aparece aqui</span>
+        <img id="qr-image" alt="QR Code gerado">
+      </div>
+      <p class="tiny">A imagem é gerada em PNG com 600 x 600 px.</p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector("#qr-form");
+    const input = document.querySelector("#link");
+    const image = document.querySelector("#qr-image");
+    const qrBox = document.querySelector("#qr-box");
+    const message = document.querySelector("#message");
+    const download = document.querySelector("#download");
+    let currentQrUrl = "";
+
+    function normalizeUrl(value) {
+      const trimmed = value.trim();
+      if (!trimmed) return "";
+      if (/^https?:\/\//i.test(trimmed)) return trimmed;
+      return `https://${trimmed}`;
+    }
+
+    function setMessage(text, isError = false) {
+      message.textContent = text;
+      message.classList.toggle("error", isError);
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const url = normalizeUrl(input.value);
+      input.value = url;
+
+      try {
+        new URL(url);
+      } catch {
+        setMessage("Digite um link válido.", true);
+        input.focus();
+        return;
+      }
+
+      const qrUrl = new URL("https://api.qrserver.com/v1/create-qr-code/");
+      qrUrl.searchParams.set("size", "600x600");
+      qrUrl.searchParams.set("margin", "20");
+      qrUrl.searchParams.set("format", "png");
+      qrUrl.searchParams.set("data", url);
+
+      image.src = qrUrl.toString();
+      currentQrUrl = qrUrl.toString();
+      download.hidden = false;
+      qrBox.classList.add("has-code");
+      setMessage("QR Code gerado.");
+    });
+
+    download.addEventListener("click", async () => {
+      if (!currentQrUrl) return;
+
+      download.disabled = true;
+      setMessage("Preparando download...");
+
+      try {
+        const response = await fetch(currentQrUrl);
+        if (!response.ok) throw new Error("Falha ao baixar imagem.");
+
+        const blob = await response.blob();
+        const fileUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = fileUrl;
+        link.download = "qr-code.png";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(fileUrl);
+        setMessage("Download iniciado.");
+      } catch {
+        setMessage("Não foi possível baixar automaticamente. Tente gerar novamente.", true);
+      } finally {
+        download.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
