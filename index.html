@@ -3,39 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gerador de QR Code</title>
+  <title>Central de Ferramentas</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main>
-    <section>
-      <h1>Gerador de QR Code</h1>
-      <p>Cole um link, gere o QR Code e use a imagem onde precisar.</p>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Categorias de ferramentas">
+      <div class="brand">
+        <span class="brand-mark">FT</span>
+        <div>
+          <strong>Flex Tools</strong>
+          <span>Central rápida</span>
+        </div>
+      </div>
 
-      <form id="qr-form" novalidate>
-        <label for="link">
-          Link
-          <input id="link" name="link" type="text" inputmode="url" placeholder="https://exemplo.com" autocomplete="url" required>
+      <nav class="category-nav" id="category-nav"></nav>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Hub de utilidades</p>
+          <h1>Ferramentas simples para tarefas rápidas</h1>
+          <p class="intro">Organize, converta, calcule e gere recursos em uma única página.</p>
+        </div>
+        <div class="summary-card">
+          <strong id="tool-count">0</strong>
+          <span>ferramentas planejadas</span>
+        </div>
+      </header>
+
+      <section class="controls" aria-label="Busca e filtros">
+        <label class="search-field" for="search">
+          <span>Buscar ferramenta</span>
+          <input id="search" type="search" placeholder="Ex.: QR Code, IMC, imagem, senha">
         </label>
+        <div class="quick-filters" id="quick-filters" aria-label="Filtros rápidos"></div>
+      </section>
 
-        <div class="actions">
-          <button type="submit">Gerar QR Code</button>
-          <button id="download" class="secondary" type="button" hidden>Baixar PNG</button>
-          <button id="download-pdf" class="secondary" type="button" hidden>Baixar PDF</button>
+      <section class="content-grid">
+        <div>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Catálogo</p>
+              <h2 id="current-title">Todas as ferramentas</h2>
+            </div>
+            <span class="result-count" id="result-count">0 resultados</span>
+          </div>
+
+          <div class="tools-grid" id="tools-grid"></div>
+          <p class="empty-state" id="empty-state" hidden>Nenhuma ferramenta encontrada.</p>
         </div>
 
-        <div id="message" class="message" aria-live="polite"></div>
-      </form>
-    </section>
-
-    <section class="preview" aria-label="Prévia do QR Code">
-      <div id="qr-box" class="qr-box">
-        <span class="tiny">O QR Code aparece aqui</span>
-        <img id="qr-image" alt="QR Code gerado">
-      </div>
-      <p class="tiny">A imagem é gerada em PNG com 600 x 600 px.</p>
-    </section>
-  </main>
+        <aside class="tool-panel" id="tool-panel" aria-live="polite">
+          <span class="panel-kicker">Selecione uma ferramenta</span>
+          <h2>Pronto para montar</h2>
+          <p>Clique em qualquer card para visualizar o estado inicial da ferramenta.</p>
+          <div class="panel-placeholder">
+            <span>Em desenvolvimento</span>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
