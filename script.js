@@ -200,6 +200,7 @@ const currentTitle = document.querySelector("#current-title");
 const resultCount = document.querySelector("#result-count");
 const toolPanel = document.querySelector("#tool-panel");
 const contentGrid = document.querySelector(".content-grid");
+const activeTools = new Set(["QR Code avançado", "Gerador de paleta de cores"]);
 
 let activeCategory = "Todas";
 let activeToolName = "";
@@ -254,6 +255,7 @@ function renderToolCard(tool) {
   card.type = "button";
   card.className = "tool-card";
   card.dataset.tool = tool.name;
+  const isActive = activeTools.has(tool.name);
   card.innerHTML = `
     <div>
       <span class="tool-icon">${tool.initials}</span>
@@ -262,7 +264,7 @@ function renderToolCard(tool) {
     </div>
     <div class="card-footer">
       <span class="category-pill">${tool.category}</span>
-      <span class="status-pill">Em breve</span>
+      <span class="status-pill ${isActive ? "ready" : ""}">${isActive ? "Ativo" : "Em breve"}</span>
     </div>
   `;
 
@@ -287,6 +289,11 @@ function renderPanel(tool) {
 
   if (tool.name === "QR Code avançado") {
     renderQrPanel(tool);
+    return;
+  }
+
+  if (tool.name === "Gerador de paleta de cores") {
+    renderPalettePanel(tool);
     return;
   }
 
@@ -328,6 +335,269 @@ function renderQrPanel(tool) {
   `;
 
   setupQrTool();
+}
+
+function renderPalettePanel(tool) {
+  toolPanel.innerHTML = `
+    <span class="panel-kicker">${tool.category}</span>
+    <h2>${tool.name}</h2>
+    <p>Gere uma paleta a partir de um HEX ou extraia cores principais de uma imagem.</p>
+
+    <form class="palette-form" id="palette-form" novalidate>
+      <label for="palette-hex">
+        Código HEX
+        <input id="palette-hex" type="text" placeholder="#0f766e" maxlength="7">
+      </label>
+
+      <button type="submit">Gerar por HEX</button>
+
+      <label class="file-picker" for="palette-image">
+        <span>Selecionar imagem</span>
+        <input id="palette-image" type="file" accept="image/*">
+      </label>
+
+      <p class="palette-message" id="palette-message" aria-live="polite"></p>
+    </form>
+
+    <div class="image-preview" id="palette-image-preview" hidden>
+      <img id="palette-preview-img" alt="Imagem usada para extrair paleta">
+    </div>
+
+    <div class="palette-grid" id="palette-grid"></div>
+  `;
+
+  setupPaletteTool();
+}
+
+function normalizeHex(value) {
+  const cleaned = value.trim().replace(/^#/, "");
+
+  if (/^[0-9a-f]{3}$/i.test(cleaned)) {
+    return `#${cleaned.split("").map((char) => char + char).join("").toUpperCase()}`;
+  }
+
+  if (/^[0-9a-f]{6}$/i.test(cleaned)) {
+    return `#${cleaned.toUpperCase()}`;
+  }
+
+  return "";
+}
+
+function hexToRgb(hex) {
+  const value = normalizeHex(hex).slice(1);
+  return {
+    r: parseInt(value.slice(0, 2), 16),
+    g: parseInt(value.slice(2, 4), 16),
+    b: parseInt(value.slice(4, 6), 16)
+  };
+}
+
+function rgbToHex({ r, g, b }) {
+  return `#${[r, g, b].map((value) => Math.max(0, Math.min(255, Math.round(value))).toString(16).padStart(2, "0")).join("").toUpperCase()}`;
+}
+
+function rgbToHsl({ r, g, b }) {
+  const red = r / 255;
+  const green = g / 255;
+  const blue = b / 255;
+  const max = Math.max(red, green, blue);
+  const min = Math.min(red, green, blue);
+  let h = 0;
+  let s = 0;
+  const l = (max + min) / 2;
+
+  if (max !== min) {
+    const delta = max - min;
+    s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+
+    if (max === red) h = (green - blue) / delta + (green < blue ? 6 : 0);
+    if (max === green) h = (blue - red) / delta + 2;
+    if (max === blue) h = (red - green) / delta + 4;
+    h /= 6;
+  }
+
+  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function hslToRgb({ h, s, l }) {
+  const hue = h / 360;
+  const saturation = s / 100;
+  const lightness = l / 100;
+
+  if (saturation === 0) {
+    const value = lightness * 255;
+    return { r: value, g: value, b: value };
+  }
+
+  const hueToRgb = (p, q, t) => {
+    let localT = t;
+    if (localT < 0) localT += 1;
+    if (localT > 1) localT -= 1;
+    if (localT < 1 / 6) return p + (q - p) * 6 * localT;
+    if (localT < 1 / 2) return q;
+    if (localT < 2 / 3) return p + (q - p) * (2 / 3 - localT) * 6;
+    return p;
+  };
+
+  const q = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
+  const p = 2 * lightness - q;
+
+  return {
+    r: hueToRgb(p, q, hue + 1 / 3) * 255,
+    g: hueToRgb(p, q, hue) * 255,
+    b: hueToRgb(p, q, hue - 1 / 3) * 255
+  };
+}
+
+function getContrastColor(hex) {
+  const { r, g, b } = hexToRgb(hex);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness > 150 ? "#151922" : "#FFFFFF";
+}
+
+function createPaletteFromHex(hex) {
+  const rgb = hexToRgb(hex);
+  const hsl = rgbToHsl(rgb);
+  const hue = hsl.h;
+
+  return [
+    { label: "Base", hex: normalizeHex(hex) },
+    { label: "Claro", hex: rgbToHex(hslToRgb({ h: hue, s: Math.max(28, hsl.s - 8), l: Math.min(92, hsl.l + 30) })) },
+    { label: "Suave", hex: rgbToHex(hslToRgb({ h: hue, s: Math.max(22, hsl.s - 18), l: Math.min(78, hsl.l + 16) })) },
+    { label: "Profundo", hex: rgbToHex(hslToRgb({ h: hue, s: Math.min(88, hsl.s + 12), l: Math.max(20, hsl.l - 20) })) },
+    { label: "Complementar", hex: rgbToHex(hslToRgb({ h: (hue + 180) % 360, s: Math.max(35, hsl.s), l: Math.max(32, Math.min(68, hsl.l)) })) }
+  ];
+}
+
+function renderPalette(colors) {
+  const paletteGrid = document.querySelector("#palette-grid");
+
+  paletteGrid.innerHTML = colors.map((color) => `
+    <button class="color-swatch" type="button" data-hex="${color.hex}" style="background:${color.hex}; color:${getContrastColor(color.hex)}">
+      <span>${color.label}</span>
+      <strong>${color.hex}</strong>
+    </button>
+  `).join("");
+
+  paletteGrid.querySelectorAll(".color-swatch").forEach((swatch) => {
+    swatch.addEventListener("click", async () => {
+      const hex = swatch.dataset.hex;
+      try {
+        await navigator.clipboard.writeText(hex);
+        setPaletteMessage(`Cor ${hex} copiada.`);
+      } catch {
+        setPaletteMessage(`Cor selecionada: ${hex}`);
+      }
+    });
+  });
+}
+
+function setPaletteMessage(text, isError = false) {
+  const message = document.querySelector("#palette-message");
+  message.textContent = text;
+  message.classList.toggle("error", isError);
+}
+
+function setupPaletteTool() {
+  const form = document.querySelector("#palette-form");
+  const hexInput = document.querySelector("#palette-hex");
+  const imageInput = document.querySelector("#palette-image");
+  const imagePreview = document.querySelector("#palette-image-preview");
+  const previewImg = document.querySelector("#palette-preview-img");
+
+  renderPalette(createPaletteFromHex("#0F766E"));
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const hex = normalizeHex(hexInput.value);
+    if (!hex) {
+      setPaletteMessage("Digite um HEX válido, como #0F766E.", true);
+      hexInput.focus();
+      return;
+    }
+
+    hexInput.value = hex;
+    imagePreview.hidden = true;
+    renderPalette(createPaletteFromHex(hex));
+    setPaletteMessage("Paleta gerada a partir do HEX.");
+  });
+
+  imageInput.addEventListener("change", async () => {
+    const file = imageInput.files?.[0];
+    if (!file) return;
+
+    try {
+      const imageUrl = URL.createObjectURL(file);
+      previewImg.src = imageUrl;
+      imagePreview.hidden = false;
+      const colors = await extractPaletteFromImage(imageUrl);
+      renderPalette(colors);
+      setPaletteMessage("Paleta extraída da imagem.");
+    } catch {
+      setPaletteMessage("Não foi possível ler essa imagem.", true);
+    }
+  });
+}
+
+async function extractPaletteFromImage(imageUrl) {
+  const image = new Image();
+  image.src = imageUrl;
+
+  await new Promise((resolve, reject) => {
+    image.onload = resolve;
+    image.onerror = reject;
+  });
+
+  const canvas = document.createElement("canvas");
+  const maxSize = 180;
+  const scale = Math.min(1, maxSize / Math.max(image.naturalWidth, image.naturalHeight));
+  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
+  const buckets = new Map();
+
+  for (let index = 0; index < data.length; index += 16) {
+    const alpha = data[index + 3];
+    if (alpha < 128) continue;
+
+    const r = Math.round(data[index] / 32) * 32;
+    const g = Math.round(data[index + 1] / 32) * 32;
+    const b = Math.round(data[index + 2] / 32) * 32;
+    const key = `${r},${g},${b}`;
+    const current = buckets.get(key) || { r: 0, g: 0, b: 0, count: 0 };
+
+    current.r += data[index];
+    current.g += data[index + 1];
+    current.b += data[index + 2];
+    current.count += 1;
+    buckets.set(key, current);
+  }
+
+  const colors = [...buckets.values()]
+    .map((bucket) => ({
+      r: bucket.r / bucket.count,
+      g: bucket.g / bucket.count,
+      b: bucket.b / bucket.count,
+      count: bucket.count
+    }))
+    .filter((color) => {
+      const hsl = rgbToHsl(color);
+      return hsl.l > 8 && hsl.l < 94;
+    })
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5)
+    .map((color, index) => ({
+      label: index === 0 ? "Principal" : `Cor ${index + 1}`,
+      hex: rgbToHex(color)
+    }));
+
+  if (colors.length === 0) return createPaletteFromHex("#0F766E");
+  return colors;
 }
 
 function normalizeQrValue(value) {

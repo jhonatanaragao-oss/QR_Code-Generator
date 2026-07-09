@@ -316,6 +316,11 @@ h2 {
   background: #fff2d6;
 }
 
+.status-pill.ready {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
 .tool-panel {
   position: sticky;
   top: 24px;
@@ -469,6 +474,135 @@ h2 {
 
 .qr-preview.has-code span {
   display: none;
+}
+
+.palette-form {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.palette-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.palette-form input[type="text"] {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--text);
+  background: #fff;
+  font: inherit;
+  text-transform: uppercase;
+}
+
+.palette-form input[type="text"]:focus {
+  outline: 3px solid rgba(15, 118, 110, 0.16);
+  border-color: var(--accent);
+}
+
+.palette-form button,
+.file-picker {
+  min-height: 42px;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.palette-form button {
+  color: #fff;
+  background: var(--accent);
+}
+
+.palette-form button:hover {
+  background: var(--accent-strong);
+}
+
+.file-picker {
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  background: #eef2f6;
+  text-align: center;
+}
+
+.file-picker:hover {
+  background: #e2e8f0;
+}
+
+.file-picker input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.palette-message {
+  min-height: 21px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.palette-message.error {
+  color: #b42318;
+  font-weight: 800;
+}
+
+.image-preview {
+  margin-top: 14px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+}
+
+.image-preview img {
+  width: 100%;
+  max-height: 180px;
+  display: block;
+  object-fit: cover;
+}
+
+.palette-grid {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.color-swatch {
+  min-height: 72px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: left;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+}
+
+.color-swatch span,
+.color-swatch strong {
+  display: block;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.18);
+}
+
+.color-swatch span {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.color-swatch strong {
+  font-size: 16px;
+  letter-spacing: 0;
 }
 
 .empty-state {
