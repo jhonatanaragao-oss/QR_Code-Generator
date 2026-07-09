@@ -193,14 +193,13 @@ const tools = [
 ];
 
 const categoryNav = document.querySelector("#category-nav");
-const quickFilters = document.querySelector("#quick-filters");
 const toolsGrid = document.querySelector("#tools-grid");
 const emptyState = document.querySelector("#empty-state");
 const searchInput = document.querySelector("#search");
 const currentTitle = document.querySelector("#current-title");
 const resultCount = document.querySelector("#result-count");
-const toolCount = document.querySelector("#tool-count");
 const toolPanel = document.querySelector("#tool-panel");
+const contentGrid = document.querySelector(".content-grid");
 
 let activeCategory = "Todas";
 let activeToolName = "";
@@ -210,17 +209,12 @@ function countByCategory(category) {
   return tools.filter((tool) => tool.category === category).length;
 }
 
-function createCategoryButton(category, compact = false) {
+function createCategoryButton(category) {
   const button = document.createElement("button");
   button.type = "button";
-  button.className = compact ? "filter-chip" : "category-button";
+  button.className = "category-button";
   button.dataset.category = category;
-
-  if (compact) {
-    button.textContent = category;
-  } else {
-    button.innerHTML = `<strong>${category}</strong><span>${countByCategory(category)}</span>`;
-  }
+  button.innerHTML = `<strong>${category}</strong><span>${countByCategory(category)}</span>`;
 
   button.addEventListener("click", () => {
     activeCategory = category;
@@ -232,11 +226,9 @@ function createCategoryButton(category, compact = false) {
 
 function renderCategories() {
   categoryNav.innerHTML = "";
-  quickFilters.innerHTML = "";
 
   categories.forEach((category) => {
     categoryNav.appendChild(createCategoryButton(category));
-    quickFilters.appendChild(createCategoryButton(category, true));
   });
 }
 
@@ -290,6 +282,8 @@ function renderActiveCards() {
 }
 
 function renderPanel(tool) {
+  toolPanel.hidden = false;
+  contentGrid.classList.add("has-panel");
   toolPanel.innerHTML = `
     <span class="panel-kicker">${tool.category}</span>
     <h2>${tool.name}</h2>
@@ -306,7 +300,6 @@ function render() {
 
   currentTitle.textContent = activeCategory === "Todas" ? "Todas as ferramentas" : activeCategory;
   resultCount.textContent = resultLabel;
-  toolCount.textContent = tools.length;
   emptyState.hidden = visibleTools.length > 0;
 
   document.querySelectorAll("[data-category]").forEach((button) => {

@@ -94,12 +94,12 @@ button {
 }
 
 .category-nav {
+  margin-top: 18px;
   display: grid;
   gap: 8px;
 }
 
 .category-button,
-.filter-chip,
 .tool-card {
   cursor: pointer;
 }
@@ -145,10 +145,7 @@ button {
 }
 
 .topbar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px;
-  gap: 18px;
-  align-items: stretch;
+  padding-top: 10px;
 }
 
 .eyebrow {
@@ -186,9 +183,7 @@ h2 {
   line-height: 1.55;
 }
 
-.summary-card,
 .tool-panel,
-.controls,
 .tool-card {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -196,35 +191,10 @@ h2 {
   box-shadow: var(--shadow);
 }
 
-.summary-card {
-  display: grid;
-  align-content: center;
-  gap: 4px;
-  padding: 20px;
-}
-
-.summary-card strong {
-  font-size: 42px;
-  line-height: 1;
-}
-
-.summary-card span {
-  color: var(--muted);
-  line-height: 1.35;
-}
-
-.controls {
-  margin-top: 26px;
-  padding: 18px;
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(280px, 1.2fr);
-  gap: 16px;
-  align-items: end;
-}
-
 .search-field {
   display: grid;
   gap: 8px;
+  padding: 0 8px;
   color: var(--ink);
   font-weight: 800;
 }
@@ -244,34 +214,16 @@ h2 {
   border-color: var(--accent);
 }
 
-.quick-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.filter-chip {
-  min-height: 38px;
-  border-radius: 999px;
-  padding: 0 14px;
-  color: var(--muted);
-  background: #eef2f6;
-  font-weight: 800;
-}
-
-.filter-chip:hover,
-.filter-chip.active {
-  color: #fff;
-  background: var(--accent);
-}
-
 .content-grid {
   margin-top: 26px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 22px;
   align-items: start;
+}
+
+.content-grid.has-panel {
+  grid-template-columns: minmax(0, 1fr) 320px;
 }
 
 .section-heading {
@@ -370,6 +322,10 @@ h2 {
   padding: 22px;
 }
 
+.tool-panel[hidden] {
+  display: none;
+}
+
 .panel-kicker {
   display: inline-flex;
   margin-bottom: 12px;
@@ -447,13 +403,8 @@ h2 {
   }
 
   .topbar,
-  .controls,
   .content-grid {
     grid-template-columns: 1fr;
-  }
-
-  .quick-filters {
-    justify-content: flex-start;
   }
 
   .tool-panel {

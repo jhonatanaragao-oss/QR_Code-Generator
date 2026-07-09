@@ -17,29 +17,21 @@
         </div>
       </div>
 
+      <label class="search-field" for="search">
+        <span>Buscar ferramenta</span>
+        <input id="search" type="search" placeholder="Ex.: QR Code, IMC, imagem">
+      </label>
+
       <nav class="category-nav" id="category-nav"></nav>
     </aside>
 
     <main class="workspace">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Hub de utilidades</p>
-          <h1>Ferramentas simples para tarefas rápidas</h1>
+          <h1>Hub de utilidades</h1>
           <p class="intro">Organize, converta, calcule e gere recursos em uma única página.</p>
         </div>
-        <div class="summary-card">
-          <strong id="tool-count">0</strong>
-          <span>ferramentas planejadas</span>
-        </div>
       </header>
-
-      <section class="controls" aria-label="Busca e filtros">
-        <label class="search-field" for="search">
-          <span>Buscar ferramenta</span>
-          <input id="search" type="search" placeholder="Ex.: QR Code, IMC, imagem, senha">
-        </label>
-        <div class="quick-filters" id="quick-filters" aria-label="Filtros rápidos"></div>
-      </section>
 
       <section class="content-grid">
         <div>
@@ -55,14 +47,7 @@
           <p class="empty-state" id="empty-state" hidden>Nenhuma ferramenta encontrada.</p>
         </div>
 
-        <aside class="tool-panel" id="tool-panel" aria-live="polite">
-          <span class="panel-kicker">Selecione uma ferramenta</span>
-          <h2>Pronto para montar</h2>
-          <p>Clique em qualquer card para visualizar o estado inicial da ferramenta.</p>
-          <div class="panel-placeholder">
-            <span>Em desenvolvimento</span>
-          </div>
-        </aside>
+        <aside class="tool-panel" id="tool-panel" aria-live="polite" hidden></aside>
       </section>
     </main>
   </div>
