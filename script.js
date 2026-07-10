@@ -203,7 +203,8 @@ const activeTools = new Set([
   "Diferença entre textos",
   "Gerador de Lorem Ipsum",
   "QR Code avançado",
-  "Gerador de paleta de cores"
+  "Gerador de paleta de cores",
+  ...(window.externalActiveTools || [])
 ]);
 const categoryNav = document.querySelector("#category-nav");
 const toolsGrid = document.querySelector("#tools-grid");
@@ -387,6 +388,12 @@ function renderPanelShell(tool, body) {
 }
 
 function renderPanel(tool) {
+  const externalRenderer = window.toolRenderers?.[tool.name];
+  if (externalRenderer) {
+    externalRenderer(tool, { renderPanelShell, setToolMessage });
+    return;
+  }
+
   if (tool.name === "Diferença entre textos") {
     renderTextDiffPanel(tool);
     return;
