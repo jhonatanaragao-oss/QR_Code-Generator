@@ -3,38 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Central de Ferramentas</title>
+  <title>Hub de utilidades</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app-shell">
-    <aside class="sidebar" aria-label="Categorias de ferramentas">
+    <aside class="sidebar" aria-label="Navegação principal">
       <div class="brand">
-        <span class="brand-mark">FT</span>
+        <span class="brand-mark" aria-hidden="true">FT</span>
         <div>
           <strong>Flex Tools</strong>
-          <span>Central rápida</span>
+          <span>Utilidades rápidas</span>
         </div>
       </div>
 
       <label class="search-field" for="search">
         <span>Buscar ferramenta</span>
-        <input id="search" type="search" placeholder="Ex.: QR Code, IMC, imagem">
+        <input id="search" type="search" placeholder="QR Code, IMC, imagem..." autocomplete="off">
       </label>
 
-      <nav class="category-nav" id="category-nav"></nav>
+      <nav class="category-nav" id="category-nav" aria-label="Categorias"></nav>
+
+      <div class="sidebar-note">
+        <strong>Atalho</strong>
+        <span>Favorite ferramentas para voltar nelas mais rápido.</span>
+      </div>
     </aside>
 
-    <main class="workspace">
-      <header class="topbar">
-        <div>
+    <main class="main">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Hub de utilidades</p>
           <h1>Hub de utilidades</h1>
-          <p class="intro">Organize, converta, calcule e gere recursos em uma única página.</p>
+          <p class="intro">Ferramentas úteis, organizadas para resolver tarefas do dia a dia. Busque, filtre, favorite e abra tudo em uma interface rápida, limpa e direta.</p>
+        </div>
+
+        <div class="hero-metrics" aria-label="Resumo do produto">
+          <div>
+            <strong id="total-tools">0</strong>
+            <span>ferramentas</span>
+          </div>
+          <div>
+            <strong id="active-tools">0</strong>
+            <span>ativas</span>
+          </div>
+          <div>
+            <strong id="favorite-tools">0</strong>
+            <span>favoritas</span>
+          </div>
         </div>
       </header>
 
+      <section class="view-bar" aria-label="Organização do catálogo">
+        <div class="segmented-control" id="view-filters"></div>
+        <button class="subtle-button" id="clear-search" type="button" hidden>Limpar busca</button>
+      </section>
+
       <section class="content-grid">
-        <div>
+        <section class="catalog" aria-labelledby="current-title">
           <div class="section-heading">
             <div>
               <p class="eyebrow">Catálogo</p>
@@ -44,8 +70,12 @@
           </div>
 
           <div class="tools-grid" id="tools-grid"></div>
-          <p class="empty-state" id="empty-state" hidden>Nenhuma ferramenta encontrada.</p>
-        </div>
+
+          <div class="empty-state" id="empty-state" hidden>
+            <strong>Nada encontrado</strong>
+            <p>Revise a busca ou troque o filtro ativo.</p>
+          </div>
+        </section>
 
         <aside class="tool-panel" id="tool-panel" aria-live="polite" hidden></aside>
       </section>
