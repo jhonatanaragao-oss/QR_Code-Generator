@@ -21,181 +21,211 @@ const tools = [
     name: "Diferença entre textos",
     category: "Texto",
     description: "Compara dois textos e destaca exatamente o que mudou.",
-    initials: "DT"
+    initials: "DT",
+    icon: "icons/text-diff.ico"
   },
   {
     name: "Gerador de Lorem Ipsum",
     category: "Texto",
     description: "Cria textos fictícios em tamanhos rápidos para layouts.",
-    initials: "LI"
+    initials: "LI",
+    icon: "icons/lorem.ico"
   },
   {
     name: "Contador de Caracteres",
     category: "Texto",
     description: "Conta caracteres, espaços e limites de texto.",
-    initials: "CC"
+    initials: "CC",
+    icon: "icons/character-counter.ico"
   },
   {
     name: "Contador de Palavras",
     category: "Texto",
     description: "Conta palavras e ajuda a revisar textos curtos ou longos.",
-    initials: "CP"
+    initials: "CP",
+    icon: "icons/word-counter.ico"
   },
   {
     name: "Conversor de unidade",
     category: "Conversores",
     description: "Converte medidas como mm, cm, m e polegadas.",
-    initials: "UN"
+    initials: "UN",
+    icon: "icons/unit-converter.ico"
   },
   {
     name: "Conversor de valor por extenso",
     category: "Conversores",
     description: "Transforma números e valores monetários em texto.",
-    initials: "VE"
+    initials: "VE",
+    icon: "icons/number-to-words.ico"
   },
   {
     name: "Conversor de arquivos",
     category: "Conversores",
     description: "Planejado para PDF, PNG, JPG, WEBP e SVG.",
-    initials: "AR"
+    initials: "AR",
+    icon: "icons/file-converter.ico"
   },
   {
     name: "Redimensionador de imagem",
     category: "Imagem",
     description: "Tamanhos personalizados e formatos para redes sociais.",
-    initials: "RI"
+    initials: "RI",
+    icon: "icons/image-resizer.ico"
   },
   {
     name: "Removedor de fundo com IA",
     category: "Imagem",
     description: "Remoção de fundo planejada para integração com IA.",
-    initials: "IA"
+    initials: "IA",
+    icon: "icons/background-remover.ico"
   },
   {
     name: "Compressor de imagem",
     category: "Imagem",
     description: "Reduz o peso de imagens mantendo boa qualidade visual.",
-    initials: "CI"
+    initials: "CI",
+    icon: "icons/image-compressor.ico"
   },
   {
     name: "Imagem para vetor simples",
     category: "Imagem",
     description: "Conversão futura para vetor com integração externa.",
-    initials: "VS"
+    initials: "VS",
+    icon: "icons/vector.ico"
   },
   {
     name: "Gerador de paleta de cores",
     category: "Gerar",
     description: "Cria paletas a partir de imagem ou código HEX.",
-    initials: "PC"
+    initials: "PC",
+    icon: "icons/palette.ico"
   },
   {
     name: "QR Code avançado",
     category: "Gerar",
     description: "Link, WhatsApp, e-mail, localização, Wi-Fi, Pix, vCard e texto livre.",
-    initials: "QR"
+    initials: "QR",
+    icon: "icons/codigo-qr.png"
   },
   {
     name: "Conta-gotas de cor",
     category: "Ferramentas",
     description: "Captura cores para uso rápido em projetos visuais.",
-    initials: "CG"
+    initials: "CG",
+    icon: "icons/eyedropper.ico"
   },
   {
     name: "Consulta rápida de CEP",
     category: "Ferramentas",
     description: "Preenche endereço a partir de um CEP informado.",
-    initials: "CE"
+    initials: "CE",
+    icon: "icons/cep.ico"
   },
   {
     name: "Encurtador de links",
     category: "Ferramentas",
     description: "Transforma URLs longas em links curtos personalizados.",
-    initials: "EL"
+    initials: "EL",
+    icon: "icons/link-shortener.ico"
   },
   {
     name: "Sorteador",
     category: "Ferramentas",
     description: "Sorteia nomes, brindes, funcionários e listas diversas.",
-    initials: "SO"
+    initials: "SO",
+    icon: "icons/raffle.ico"
   },
   {
     name: "Gerador de Senhas",
     category: "Ferramentas",
     description: "Senhas fortes, fáceis, numéricas ou personalizadas.",
-    initials: "GS"
+    initials: "GS",
+    icon: "icons/password.ico"
   },
   {
     name: "Calculadora de salário líquido",
     category: "Calculadoras",
     description: "Estima salário líquido com descontos principais.",
-    initials: "SL"
+    initials: "SL",
+    icon: "icons/salary.ico"
   },
   {
     name: "Calculadora de tinta",
     category: "Calculadoras",
     description: "Calcula quantidade aproximada de tinta por área.",
-    initials: "TI"
+    initials: "TI",
+    icon: "icons/paint.ico"
   },
   {
     name: "Calculadora de m²",
     category: "Calculadoras",
     description: "Piso, parede, terreno, pintura e áreas gerais.",
-    initials: "M2"
+    initials: "M2",
+    icon: "icons/area.ico"
   },
   {
     name: "Calculadora de papel de parede",
     category: "Calculadoras",
     description: "Estima quantidade de rolos para um ambiente.",
-    initials: "PP"
+    initials: "PP",
+    icon: "icons/wallpaper.ico"
   },
   {
     name: "Calculadora de iluminação",
     category: "Calculadoras",
     description: "Estima lâmpadas necessárias por ambiente.",
-    initials: "IL"
+    initials: "IL",
+    icon: "icons/lighting.ico"
   },
   {
     name: "Calculadora de ar-condicionado BTU",
     category: "Calculadoras",
     description: "Sugere tamanho ideal por ambiente.",
-    initials: "BT"
+    initials: "BT",
+    icon: "icons/btu.ico"
   },
   {
     name: "Calculadora de volume",
     category: "Calculadoras",
     description: "Caixa d'água, reservatórios e caixas.",
-    initials: "VO"
+    initials: "VO",
+    icon: "icons/volume.ico"
   },
   {
     name: "Consumo de combustível",
     category: "Calculadoras",
     description: "Calcula Km/L e custo por quilômetro.",
-    initials: "KM"
+    initials: "KM",
+    icon: "icons/fuel.ico"
   },
   {
     name: "Calculadora de IMC",
     category: "Calculadoras",
     description: "Relaciona peso e altura para estimativa de IMC.",
-    initials: "IM"
+    initials: "IM",
+    icon: "icons/imc.ico"
   },
   {
     name: "Cronômetro",
     category: "Tempo e Data",
     description: "Marca tempo com início, pausa e reinício.",
-    initials: "CR"
+    initials: "CR",
+    icon: "icons/stopwatch.ico"
   },
   {
     name: "Timer",
     category: "Tempo e Data",
     description: "Contagem regressiva para tarefas e lembretes rápidos.",
-    initials: "TM"
+    initials: "TM",
+    icon: "icons/timer.ico"
   },
   {
     name: "Contador de dias",
     category: "Tempo e Data",
     description: "Calcula dias entre duas datas.",
-    initials: "CD"
+    initials: "CD",
+    icon: "icons/days-counter.ico"
   }
 ];
 
@@ -309,6 +339,9 @@ function renderToolCard(tool) {
   const card = document.createElement("article");
   const isReady = activeTools.has(tool.name);
   const isFavorite = favorites.includes(tool.name);
+  const iconContent = tool.icon
+    ? `<img src="${tool.icon}" alt="" loading="lazy" onerror="this.parentElement.classList.remove('has-image'); this.parentElement.textContent=this.parentElement.dataset.initials;">`
+    : tool.initials;
 
   card.className = "tool-card";
   card.dataset.tool = tool.name;
@@ -319,7 +352,7 @@ function renderToolCard(tool) {
     <button class="tool-card-main" type="button" data-tool-open="${tool.name}">
       <div>
         <div class="tool-card-top">
-          <span class="tool-icon" aria-hidden="true">${tool.initials}</span>
+          <span class="tool-icon ${tool.icon ? "has-image" : ""}" data-initials="${tool.initials}" aria-hidden="true">${iconContent}</span>
         </div>
         <h3>${tool.name}</h3>
         <p>${tool.description}</p>

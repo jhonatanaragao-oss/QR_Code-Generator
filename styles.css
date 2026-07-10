@@ -442,6 +442,19 @@ h3 {
   background: var(--accent-soft);
   font-size: 13px;
   font-weight: 950;
+  overflow: hidden;
+}
+
+.tool-icon img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  object-fit: contain;
+}
+
+.tool-icon.has-image {
+  background: #fff;
+  border: 1px solid var(--line);
 }
 
 .favorite-button {
