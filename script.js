@@ -22,28 +22,28 @@ const tools = [
     category: "Texto",
     description: "Compara dois textos e destaca exatamente o que mudou.",
     initials: "DT",
-    icon: "icons/text-diff.ico"
+    icon: "icons/icons8-txt-48.png"
   },
   {
     name: "Gerador de Lorem Ipsum",
     category: "Texto",
     description: "Cria textos fictícios em tamanhos rápidos para layouts.",
     initials: "LI",
-    icon: "icons/lorem.ico"
+    icon: "icons/icons8-texto-50.png"
   },
   {
     name: "Contador de Caracteres",
     category: "Texto",
     description: "Conta caracteres, espaços e limites de texto.",
     initials: "CC",
-    icon: "icons/character-counter.ico"
+    icon: "icons/icons8-contador-100.png"
   },
   {
     name: "Contador de Palavras",
     category: "Texto",
     description: "Conta palavras e ajuda a revisar textos curtos ou longos.",
     initials: "CP",
-    icon: "icons/word-counter.ico"
+    icon: "icons/icons8-contador-100.png"
   },
   {
     name: "Conversor de unidade",
@@ -64,7 +64,7 @@ const tools = [
     category: "Conversores",
     description: "Planejado para PDF, PNG, JPG, WEBP e SVG.",
     initials: "AR",
-    icon: "icons/file-converter.ico"
+    icon: "icons/icons8-compare-48.png"
   },
   {
     name: "Redimensionador de imagem",
@@ -99,7 +99,7 @@ const tools = [
     category: "Gerar",
     description: "Cria paletas a partir de imagem ou código HEX.",
     initials: "PC",
-    icon: "icons/palette.ico"
+    icon: "icons/icons8-paleta-de-cores-94.png"
   },
   {
     name: "QR Code avançado",
@@ -113,7 +113,7 @@ const tools = [
     category: "Ferramentas",
     description: "Captura cores para uso rápido em projetos visuais.",
     initials: "CG",
-    icon: "icons/eyedropper.ico"
+    icon: "icons/icons8-conta-gotas-64.png"
   },
   {
     name: "Consulta rápida de CEP",
