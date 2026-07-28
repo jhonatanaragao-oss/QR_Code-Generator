@@ -1138,6 +1138,122 @@ select.tool-input {
   font-weight: 850;
 }
 
+.password-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.password-list {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.password-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--surface-muted);
+}
+
+.password-item code {
+  min-width: 0;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 850;
+  word-break: break-all;
+}
+
+.password-item .secondary-action {
+  min-height: 36px;
+}
+
+.eyedropper-result {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  border: 1px solid rgba(8, 122, 112, 0.26);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--accent-soft);
+}
+
+.eyedropper-swatch {
+  width: 84px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+.eyedropper-result span,
+.eyedropper-result strong {
+  display: block;
+}
+
+.eyedropper-result span {
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.eyedropper-result strong {
+  margin-top: 6px;
+  color: var(--text);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.eyedropper-canvas-wrap {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--surface-muted);
+}
+
+.eyedropper-canvas-wrap canvas {
+  width: 100%;
+  max-height: 360px;
+  display: block;
+  border-radius: 6px;
+  object-fit: contain;
+  cursor: crosshair;
+}
+
+.eyedropper-history {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+}
+
+.eyedropper-history button {
+  min-height: 46px;
+  display: grid;
+  align-items: end;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 8px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: inset 0 -24px 28px rgba(0, 0, 0, 0.22);
+}
+
+.eyedropper-history span {
+  font-size: 12px;
+  font-weight: 900;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.42);
+}
+
 .time-display {
   margin-top: 18px;
   border: 1px solid rgba(8, 122, 112, 0.26);
@@ -1431,6 +1547,9 @@ select.tool-input {
   .breakdown-grid,
   .file-meta,
   .counter-grid,
+  .password-options,
+  .password-item,
+  .eyedropper-result,
   .time-actions,
   .preset-row,
   .time-input-grid,
